@@ -23,26 +23,26 @@ pipeline {
             steps {
                 echo "Hello Java Express"
                 sh 'ls'
-                sh 'sudo docker build -t  revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER} .'
+                sh 'docker build -t  revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER} .'
             }
         }
         stage('Docker Login'){
             
             steps {
                  withCredentials([string(credentialsId: 'DockerId', variable: 'Dockerpwd')]) {
-                    sh "sudo docker login -u revaturebrian -p ${Dockerpwd}"
+                    sh "docker login -u revaturebrian -p ${Dockerpwd}"
                 }
             }                
         }
         stage('Docker Push'){
             steps {
-                sh 'sudo docker push revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER}'
+                sh 'docker push revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER}'
             }
         }
         stage('Docker deploy'){
             steps {
                
-                sh 'sudo docker run -itd -p  8081:8080 revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER}'
+                sh 'docker run -itd -p  8081:8080 revaturebrian/docker_jenkins_springboot:${BUILD_NUMBER}'
             }
         }
         stage('Archving') { 
